@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.home.HomeFragment">
+
+    <ImageView
+        android:id="@+id/weatherIcoView"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="12dp"
+        android:src="@drawable/snow"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.157"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/cityNameView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="25dp"
+        android:text=""
+        android:textColor="@color/colorPrimary"
+        android:textSize="@dimen/size_30"
+        app:layout_constraintStart_toEndOf="@+id/weatherIcoView"
+        app:layout_constraintTop_toTopOf="@+id/weatherIcoView" />
+
+    <TextView
+        android:id="@+id/showTempViewFragmentShowCityInfo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textColor="@color/colorPrimary"
+        android:textSize="@dimen/size_30"
+        app:layout_constraintStart_toStartOf="@+id/cityNameView"
+        app:layout_constraintTop_toBottomOf="@+id/cityNameView" />
+
+    <TextView
+        android:id="@+id/windSpeed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:text="@string/wind_speed"
+        android:textColor="@color/colorPrimary"
+        android:textSize="@dimen/size_30"
+        app:layout_constraintStart_toStartOf="@+id/weatherIcoView"
+        app:layout_constraintTop_toBottomOf="@+id/weatherIcoView" />
+
+    <TextView
+        android:id="@+id/windSpeedView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="0dp"
+        android:text=""
+        android:textColor="@color/colorPrimary"
+        android:textSize="@dimen/size_30"
+        app:layout_constraintStart_toEndOf="@+id/windSpeed"
+        app:layout_constraintTop_toTopOf="@+id/windSpeed" />
+
+    <TextView
+        android:id="@+id/pressure"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/pressure"
+        android:textColor="@color/colorPrimary"
+        android:textSize="@dimen/size_30"
+        app:layout_constraintStart_toStartOf="@+id/windSpeed"
+        app:layout_constraintTop_toBottomOf="@+id/windSpeed" />
+
+    <TextView
+        android:id="@+id/pressureView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="56dp"
+        android:layout_marginTop="4dp"
+        android:text=""
+        android:textColor="@color/colorPrimary"
+        android:textSize="@dimen/size_30"
+        app:layout_constraintStart_toEndOf="@+id/pressure"
+        app:layout_constraintTop_toTopOf="@+id/pressure" />
+
+    <TextView
+        android:id="@+id/humidity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/humidity"
+        android:textColor="@color/colorPrimary"
+        android:textSize="@dimen/size_30"
+        app:layout_constraintStart_toStartOf="@+id/pressure"
+        app:layout_constraintTop_toBottomOf="@+id/pressure" />
+
+    <TextView
+        android:id="@+id/humidityView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="56dp"
+        android:layout_marginTop="4dp"
+        android:text=""
+        android:textColor="@color/colorPrimary"
+        android:textSize="@dimen/size_30"
+        app:layout_constraintStart_toEndOf="@+id/humidity"
+        app:layout_constraintTop_toTopOf="@+id/humidity" />
+</androidx.constraintlayout.widget.ConstraintLayout>

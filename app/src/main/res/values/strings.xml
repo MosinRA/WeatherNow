@@ -1,0 +1,26 @@
+<resources>
+    <string name="app_name">WeatherNow</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Ivan</string>
+    <string name="nav_header_subtitle" translatable="false">example@example.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+    <string name="menu_home">Home</string>
+    <string name="menu_gallery">Settings</string>
+    <string name="menu_slideshow">About us</string>
+
+    <string name="city"> Surgut</string>
+    <string name="temp">90 F</string>
+    <string name="find">Find your city</string>
+    <string name="Monday">Monday</string>
+    <string name="Tuesday">Tuesday</string>
+    <string name="Wednesday">Wednesday</string>
+    <string name="Thursday">Thursday</string>
+    <string name="Friday">Friday</string>
+    <string name="Saturday">Saturday</string>
+    <string name="Sunday">Sunday</string>
+    <string name="wind_speed">Wind speed</string>
+    <string name="humidity">Humidity</string>
+    <string name="pressure">Pressure</string>
+</resources>
