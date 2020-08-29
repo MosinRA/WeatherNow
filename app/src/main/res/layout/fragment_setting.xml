@@ -22,7 +22,7 @@
         tools:ignore="UseSwitchCompatOrMaterialXml" />
 
     <Switch
-        android:id="@+id/pressureSwitch"
+        android:id="@+id/humiditySwitch"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="5dp"
@@ -37,7 +37,7 @@
         tools:ignore="UseSwitchCompatOrMaterialXml" />
 
     <Switch
-        android:id="@+id/humiditySwitch"
+        android:id="@+id/pressureSwitch"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="5dp"
@@ -47,8 +47,8 @@
         android:textSize="@dimen/size_30"
         android:theme="@style/MySwitch"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/pressureSwitch"
-        app:layout_constraintTop_toBottomOf="@+id/pressureSwitch"
+        app:layout_constraintStart_toStartOf="@+id/humiditySwitch"
+        app:layout_constraintTop_toBottomOf="@+id/humiditySwitch"
         tools:ignore="UseSwitchCompatOrMaterialXml" />
 
     <TextView

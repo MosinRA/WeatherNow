@@ -1,28 +1,26 @@
 package com.mosin.weathernow.ui.home;
 
-import android.content.Intent;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
-
 import com.google.gson.Gson;
 import com.mosin.weathernow.R;
 import com.mosin.weathernow.model.WeatherRequest;
-import com.mosin.weathernow.ui.setting.SettingFragment;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -32,30 +30,24 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Objects;
 
 import javax.net.ssl.HttpsURLConnection;
 
 public class HomeFragment extends Fragment {
+    SharedPreferences sharedPreferences;
     private static final String WEATHER_URL = "https://api.openweathermap.org/data/2.5/weather?q=";
     private static final String API_KEY = "762ee61f52313fbd10a4eb54ae4d4de2";
-    private String cityChoice = "Сургут";
-    private TextView dateNow, showTempView, showWindSpeed, showPressure, showHumidity;
+    private static String cityChoice = "Сургут";
+    private TextView dateNow, showTempView, showWindSpeed, showPressure, showHumidity, cityName;
+    private Button searchCityBtn;
     private ImageView icoWeather;
+    boolean errorStatus, errorUrlStatus;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         createWeatherJsonParam();
-        HomeViewModel homeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_home, container, false);
-        final TextView cityNameView = root.findViewById(R.id.cityNameView);
-        homeViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                cityNameView.setText(s);
-                cityChoice = s;
-            }
-        });
-        return root;
+        return inflater.inflate(R.layout.fragment_home, container, false);
     }
 
     @Override
@@ -63,6 +55,9 @@ public class HomeFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         findView(view);
         dateInit();
+        sendErInternetAlert();
+        setOnClickBtn();
+        sendErUrlAlert();
     }
 
     public void findView(View view) {
@@ -72,6 +67,8 @@ public class HomeFragment extends Fragment {
         showHumidity = view.findViewById(R.id.humidityView);
         icoWeather = view.findViewById(R.id.weatherIcoView);
         dateNow = view.findViewById(R.id.date);
+        cityName = view.findViewById(R.id.cityNameView);
+        searchCityBtn = view.findViewById(R.id.searchBtn);
     }
 
     private void createWeatherJsonParam() {
@@ -96,10 +93,11 @@ public class HomeFragment extends Fragment {
                             public void run() {
                                 displayWeather(weatherRequest);
                             }
-                        });
+                        }); errorStatus = false;
                     } catch (Exception e) {
                         Log.e("D", "Fail connection", e);
                         e.printStackTrace();
+                        errorStatus = true;
                     } finally {
                         if (null != urlConnection) {
                             urlConnection.disconnect();
@@ -110,6 +108,7 @@ public class HomeFragment extends Fragment {
         } catch (MalformedURLException e) {
             Log.e("D", "Fail URI", e);
             e.printStackTrace();
+            errorUrlStatus = true;
         }
     }
 
@@ -140,11 +139,32 @@ public class HomeFragment extends Fragment {
         pressureText = String.format(Locale.getDefault(), "%d", weatherRequest.getMain().getPressure());
         humidityStr = String.format(Locale.getDefault(), "%d", weatherRequest.getMain().getHumidity());
         windSpeedStr = String.format(Locale.getDefault(), "%.0f", weatherRequest.getWind().getSpeed());
-        String icoView = weatherRequest.getWeather()[0].getIcon();
+        cityName.setText(cityChoice);
+
+        boolean wind, pressure, humidity;
+
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+        wind = sharedPreferences.getBoolean("Wind", false);
+        pressure = sharedPreferences.getBoolean("Pressure", false);
+        humidity = sharedPreferences.getBoolean("Humidity", false);
+
         showTempView.setText(String.format("%s °", temperatureValue));
-        showWindSpeed.setText(String.format("%s м/с", windSpeedStr));
-        showPressure.setText(String.format("%s мб", pressureText));
-        showHumidity.setText(String.format("%s %%", humidityStr));
+
+        if (wind){
+            showWindSpeed.setText(String.format("%s м/с", getResources().getString(R.string.wind_speed) + " " + windSpeedStr));
+        }else {
+            showWindSpeed.setVisibility(View.GONE);
+        }
+        if (pressure){
+            showPressure.setText(String.format("%s мб", getResources().getString(R.string.pressure) + " " + pressureText));
+        } else {
+            showPressure.setVisibility(View.GONE);
+        }
+        if (humidity) {
+            showHumidity.setText(String.format("%s %%", getResources().getString(R.string.humidity) + " " + humidityStr));
+        }else {
+            showHumidity.setVisibility(View.GONE);
+        }
         setIcoViewImage(weatherRequest);
     }
 
@@ -175,5 +195,57 @@ public class HomeFragment extends Fragment {
         String dateText = dateFormat.format(currentDate);
         dateNow.setText(dateText);
     }
+
+    private void sendErInternetAlert() {
+        if (errorStatus) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+            builder.setTitle(R.string.exclamation)
+                    .setMessage(R.string.msg_to_er_internet)
+                    .setIcon(R.mipmap.ic_launcher_round)
+                    .setPositiveButton(R.string.ok_button, null);
+            AlertDialog alert = builder.create();
+            alert.show();
+        }
+    }
+
+    private void sendErUrlAlert() {
+        if (errorUrlStatus) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+            builder.setTitle(R.string.exclamation)
+                    .setMessage(R.string.msg_to_er_internet)
+                    .setIcon(R.mipmap.ic_launcher_round)
+                    .setPositiveButton(R.string.ok_button, null);
+            AlertDialog alert = builder.create();
+            alert.show();
+        }
+    }
+
+    private void setOnClickBtn (){
+        searchCityBtn.setOnClickListener(clickAlertDialogView);
+    }
+
+    private View.OnClickListener clickAlertDialogView = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(Objects.requireNonNull(getContext()));
+            final View contentView = getLayoutInflater().inflate(R.layout.alert_dialog, null);
+            builder.setTitle(R.string.enter_name)
+                    .setView(contentView)
+                    .setPositiveButton(R.string.done, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            EditText editText = contentView.findViewById(R.id.search_editor);
+                            cityChoice = editText.getText().toString();
+                            cityName.setText(cityChoice);
+                            createWeatherJsonParam();
+                        }
+                    });
+            androidx.appcompat.app.AlertDialog alert = builder.create();
+            alert.show();
+        }
+    };
 }
+
+
+
 

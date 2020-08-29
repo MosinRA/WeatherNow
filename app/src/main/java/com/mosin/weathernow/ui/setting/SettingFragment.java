@@ -20,23 +20,13 @@ import androidx.lifecycle.ViewModelProvider;
 import com.mosin.weathernow.R;
 
 public class SettingFragment extends Fragment {
-    SettingViewModel settingViewModel;
     SharedPreferences sharedPreferences;
     @SuppressLint("UseSwitchCompatOrMaterialCode")
     private Switch windSpeedSwitch, pressureSwitch, humiditySwitch;
-    public boolean indicate;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        settingViewModel = new ViewModelProvider(this).get(SettingViewModel.class);
         View root = inflater.inflate(R.layout.fragment_setting, container, false);
-        final TextView textView = root.findViewById(R.id.settingView);
-        settingViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
-            }
-        });
         return root;
     }
 
@@ -51,7 +41,6 @@ public class SettingFragment extends Fragment {
         saveWindSwitchMode();
         savePressureSwitchMode();
         saveHumiditySwitchMode();
-
     }
 
     public void findView(View view) {

@@ -22,7 +22,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="25dp"
-        android:text=""
+        android:text="@string/city"
         style="@style/TextStyle"
         app:layout_constraintStart_toEndOf="@+id/weatherIcoView"
         app:layout_constraintTop_toTopOf="@+id/weatherIcoView" />
@@ -37,67 +37,34 @@
         app:layout_constraintTop_toBottomOf="@+id/cityNameView" />
 
     <TextView
-        android:id="@+id/windSpeed"
+        android:id="@+id/windSpeedView"
+        style="@style/TextStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
-        android:text="@string/wind_speed"
-        style="@style/TextStyle"
+        android:text=""
         app:layout_constraintStart_toStartOf="@+id/weatherIcoView"
         app:layout_constraintTop_toBottomOf="@+id/weatherIcoView" />
 
     <TextView
-        android:id="@+id/windSpeedView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="0dp"
-        android:text=""
-        style="@style/TextStyle"
-        app:layout_constraintStart_toEndOf="@+id/windSpeed"
-        app:layout_constraintTop_toTopOf="@+id/windSpeed" />
-
-    <TextView
-        android:id="@+id/pressure"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="@string/pressure"
-        style="@style/TextStyle"
-        app:layout_constraintStart_toStartOf="@+id/windSpeed"
-        app:layout_constraintTop_toBottomOf="@+id/windSpeed" />
-
-    <TextView
         android:id="@+id/pressureView"
+        style="@style/TextStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="56dp"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="20dp"
         android:text=""
-        style="@style/TextStyle"
-        app:layout_constraintStart_toEndOf="@+id/pressure"
-        app:layout_constraintTop_toTopOf="@+id/pressure" />
-
-    <TextView
-        android:id="@+id/humidity"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="@string/humidity"
-        style="@style/TextStyle"
-        app:layout_constraintStart_toStartOf="@+id/pressure"
-        app:layout_constraintTop_toBottomOf="@+id/pressure" />
+        app:layout_constraintStart_toStartOf="@+id/windSpeedView"
+        app:layout_constraintTop_toBottomOf="@+id/windSpeedView" />
 
     <TextView
         android:id="@+id/humidityView"
+        style="@style/TextStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="56dp"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="20dp"
         android:text=""
-        style="@style/TextStyle"
-        app:layout_constraintStart_toEndOf="@+id/humidity"
-        app:layout_constraintTop_toTopOf="@+id/humidity" />
+        app:layout_constraintStart_toStartOf="@+id/pressureView"
+        app:layout_constraintTop_toBottomOf="@+id/pressureView" />
 
     <TextView
         android:id="@+id/date"
@@ -109,4 +76,15 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/searchBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="80dp"
+        android:text="@string/search_your_city"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/humidityView" />
 </androidx.constraintlayout.widget.ConstraintLayout>
