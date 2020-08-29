@@ -23,4 +23,12 @@
     <string name="wind_speed">Скорость ветра</string>
     <string name="humidity">Влажность</string>
     <string name="pressure">Давление</string>
+    <string name="setting_parametr">Настройка отображения парраметров</string>
+    <string name="search">Поиск</string>
+    <string name="Us_me">Мосин Роман</string>
+    <string name="exclamation">Важное сообщение!</string>
+    <string name="msg_to_er_internet">Отсутствует соединение с интернетом</string>
+    <string name="search_your_city">Найти Ваш город</string>
+    <string name="enter_name">Введите название Вашего города</string>
+    <string name="done">Готово</string>
     </resources>
