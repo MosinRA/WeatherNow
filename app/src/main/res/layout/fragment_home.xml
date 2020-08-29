@@ -10,7 +10,7 @@
         android:id="@+id/weatherIcoView"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="80dp"
         android:src="@drawable/snow"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.157"
@@ -23,8 +23,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="25dp"
         android:text=""
-        android:textColor="@color/colorPrimary"
-        android:textSize="@dimen/size_30"
+        style="@style/TextStyle"
         app:layout_constraintStart_toEndOf="@+id/weatherIcoView"
         app:layout_constraintTop_toTopOf="@+id/weatherIcoView" />
 
@@ -33,8 +32,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text=""
-        android:textColor="@color/colorPrimary"
-        android:textSize="@dimen/size_30"
+        style="@style/TextStyle"
         app:layout_constraintStart_toStartOf="@+id/cityNameView"
         app:layout_constraintTop_toBottomOf="@+id/cityNameView" />
 
@@ -44,8 +42,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
         android:text="@string/wind_speed"
-        android:textColor="@color/colorPrimary"
-        android:textSize="@dimen/size_30"
+        style="@style/TextStyle"
         app:layout_constraintStart_toStartOf="@+id/weatherIcoView"
         app:layout_constraintTop_toBottomOf="@+id/weatherIcoView" />
 
@@ -56,8 +53,7 @@
         android:layout_marginStart="20dp"
         android:layout_marginTop="0dp"
         android:text=""
-        android:textColor="@color/colorPrimary"
-        android:textSize="@dimen/size_30"
+        style="@style/TextStyle"
         app:layout_constraintStart_toEndOf="@+id/windSpeed"
         app:layout_constraintTop_toTopOf="@+id/windSpeed" />
 
@@ -67,8 +63,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:text="@string/pressure"
-        android:textColor="@color/colorPrimary"
-        android:textSize="@dimen/size_30"
+        style="@style/TextStyle"
         app:layout_constraintStart_toStartOf="@+id/windSpeed"
         app:layout_constraintTop_toBottomOf="@+id/windSpeed" />
 
@@ -79,8 +74,7 @@
         android:layout_marginStart="56dp"
         android:layout_marginTop="4dp"
         android:text=""
-        android:textColor="@color/colorPrimary"
-        android:textSize="@dimen/size_30"
+        style="@style/TextStyle"
         app:layout_constraintStart_toEndOf="@+id/pressure"
         app:layout_constraintTop_toTopOf="@+id/pressure" />
 
@@ -90,8 +84,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:text="@string/humidity"
-        android:textColor="@color/colorPrimary"
-        android:textSize="@dimen/size_30"
+        style="@style/TextStyle"
         app:layout_constraintStart_toStartOf="@+id/pressure"
         app:layout_constraintTop_toBottomOf="@+id/pressure" />
 
@@ -102,8 +95,18 @@
         android:layout_marginStart="56dp"
         android:layout_marginTop="4dp"
         android:text=""
-        android:textColor="@color/colorPrimary"
-        android:textSize="@dimen/size_30"
+        style="@style/TextStyle"
         app:layout_constraintStart_toEndOf="@+id/humidity"
         app:layout_constraintTop_toTopOf="@+id/humidity" />
+
+    <TextView
+        android:id="@+id/date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:text=""
+        style="@style/TextStyle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

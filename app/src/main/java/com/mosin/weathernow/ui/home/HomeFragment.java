@@ -1,6 +1,7 @@
 package com.mosin.weathernow.ui.home;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -15,17 +16,21 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.google.gson.Gson;
 import com.mosin.weathernow.R;
 import com.mosin.weathernow.model.WeatherRequest;
+import com.mosin.weathernow.ui.setting.SettingFragment;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Locale;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -34,23 +39,20 @@ public class HomeFragment extends Fragment {
     private static final String WEATHER_URL = "https://api.openweathermap.org/data/2.5/weather?q=";
     private static final String API_KEY = "762ee61f52313fbd10a4eb54ae4d4de2";
     private String cityChoice = "Сургут";
-    private TextView showCity, showTempView, showWindSpeed, showPressure, showHumidity;
+    private TextView dateNow, showTempView, showWindSpeed, showPressure, showHumidity;
     private ImageView icoWeather;
-    private String temperatureValue, pressureText, humidityStr, windSpeedStr;
-
-    private HomeViewModel homeViewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         createWeatherJsonParam();
-        homeViewModel =
-                ViewModelProviders.of(this).get(HomeViewModel.class);
+        HomeViewModel homeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
         View root = inflater.inflate(R.layout.fragment_home, container, false);
         final TextView cityNameView = root.findViewById(R.id.cityNameView);
         homeViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
                 cityNameView.setText(s);
+                cityChoice = s;
             }
         });
         return root;
@@ -60,15 +62,16 @@ public class HomeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         findView(view);
+        dateInit();
     }
 
     public void findView(View view) {
-        showCity = view.findViewById(R.id.cityNameView);
         showTempView = view.findViewById(R.id.showTempViewFragmentShowCityInfo);
         showWindSpeed = view.findViewById(R.id.windSpeedView);
         showPressure = view.findViewById(R.id.pressureView);
         showHumidity = view.findViewById(R.id.humidityView);
         icoWeather = view.findViewById(R.id.weatherIcoView);
+        dateNow = view.findViewById(R.id.date);
     }
 
     private void createWeatherJsonParam() {
@@ -132,6 +135,7 @@ public class HomeFragment extends Fragment {
     }
 
     private void displayWeather(WeatherRequest weatherRequest) {
+        String temperatureValue, pressureText, humidityStr, windSpeedStr;
         temperatureValue = String.format(Locale.getDefault(), "%.0f", weatherRequest.getMain().getTemp());
         pressureText = String.format(Locale.getDefault(), "%d", weatherRequest.getMain().getPressure());
         humidityStr = String.format(Locale.getDefault(), "%d", weatherRequest.getMain().getHumidity());
@@ -164,4 +168,12 @@ public class HomeFragment extends Fragment {
             icoWeather.setImageResource(R.drawable.mist);
         }
     }
+
+    private void dateInit() {
+        Date currentDate = new Date();
+        DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault());
+        String dateText = dateFormat.format(currentDate);
+        dateNow.setText(dateText);
+    }
 }
+
