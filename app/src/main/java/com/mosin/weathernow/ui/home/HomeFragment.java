@@ -1,7 +1,6 @@
 package com.mosin.weathernow.ui.home;
 
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
@@ -9,15 +8,19 @@ import android.os.Looper;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
+
 import com.google.gson.Gson;
 import com.mosin.weathernow.R;
 import com.mosin.weathernow.model.WeatherRequest;
@@ -30,34 +33,61 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
-import java.util.Objects;
 
 import javax.net.ssl.HttpsURLConnection;
 
 public class HomeFragment extends Fragment {
+    private boolean wind, pressure, humidity;
     SharedPreferences sharedPreferences;
     private static final String WEATHER_URL = "https://api.openweathermap.org/data/2.5/weather?q=";
     private static final String API_KEY = "762ee61f52313fbd10a4eb54ae4d4de2";
     private static String cityChoice = "Сургут";
-    private TextView dateNow, showTempView, showWindSpeed, showPressure, showHumidity, cityName;
-    private Button searchCityBtn;
+    private TextView dateNow, showTempView, showWindSpeed, showPressure, showHumidity, cityName, time;
     private ImageView icoWeather;
     boolean errorStatus, errorUrlStatus;
+    private  MenuItem search;
+    private SearchView searchText;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        createWeatherJsonParam();
         return inflater.inflate(R.layout.fragment_home, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        setHasOptionsMenu(true);
         findView(view);
         dateInit();
         sendErInternetAlert();
-        setOnClickBtn();
         sendErUrlAlert();
+        initSettingSwitch();
+        createWeatherJsonParam();
+    }
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull final Menu menu, @NonNull MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        search = menu.findItem(R.id.action_search);
+        searchText = (SearchView) search.getActionView(); // строка поиска
+        searchText.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                cityChoice = query;
+                sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putString("cityName", cityChoice);
+                editor.apply();
+                cityName.setText(cityChoice);
+                createWeatherJsonParam();
+                searchText.onActionViewCollapsed();
+                return true;
+            }
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return true;
+            }
+        });
     }
 
     public void findView(View view) {
@@ -68,10 +98,20 @@ public class HomeFragment extends Fragment {
         icoWeather = view.findViewById(R.id.weatherIcoView);
         dateNow = view.findViewById(R.id.date);
         cityName = view.findViewById(R.id.cityNameView);
-        searchCityBtn = view.findViewById(R.id.searchBtn);
+        time = view.findViewById(R.id.time);
     }
 
-    private void createWeatherJsonParam() {
+    public void initSettingSwitch (){
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+        wind = sharedPreferences.getBoolean("Wind", false);
+        pressure = sharedPreferences.getBoolean("Pressure", false);
+        humidity = sharedPreferences.getBoolean("Humidity", false);
+        cityChoice = sharedPreferences.getString("cityName", "cityNameSearch");
+        cityName.setText(cityChoice);
+    }
+
+    public void createWeatherJsonParam() {
+        initSettingSwitch ();
         try {
             final URL uri = new URL(WEATHER_URL + cityChoice + "&units=metric&appid=" + API_KEY);
             final Handler handler = new Handler(Looper.myLooper()); // Запоминаем основной поток
@@ -139,17 +179,7 @@ public class HomeFragment extends Fragment {
         pressureText = String.format(Locale.getDefault(), "%d", weatherRequest.getMain().getPressure());
         humidityStr = String.format(Locale.getDefault(), "%d", weatherRequest.getMain().getHumidity());
         windSpeedStr = String.format(Locale.getDefault(), "%.0f", weatherRequest.getWind().getSpeed());
-        cityName.setText(cityChoice);
-
-        boolean wind, pressure, humidity;
-
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
-        wind = sharedPreferences.getBoolean("Wind", false);
-        pressure = sharedPreferences.getBoolean("Pressure", false);
-        humidity = sharedPreferences.getBoolean("Humidity", false);
-
         showTempView.setText(String.format("%s °", temperatureValue));
-
         if (wind){
             showWindSpeed.setText(String.format("%s м/с", getResources().getString(R.string.wind_speed) + " " + windSpeedStr));
         }else {
@@ -193,7 +223,10 @@ public class HomeFragment extends Fragment {
         Date currentDate = new Date();
         DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault());
         String dateText = dateFormat.format(currentDate);
+        DateFormat timeFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
+        String timeText = timeFormat.format(currentDate);
         dateNow.setText(dateText);
+        time.setText(timeText);
     }
 
     private void sendErInternetAlert() {
@@ -212,7 +245,7 @@ public class HomeFragment extends Fragment {
         if (errorUrlStatus) {
             AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
             builder.setTitle(R.string.exclamation)
-                    .setMessage(R.string.msg_to_er_internet)
+                    .setMessage("Что то пошло не так")
                     .setIcon(R.mipmap.ic_launcher_round)
                     .setPositiveButton(R.string.ok_button, null);
             AlertDialog alert = builder.create();
@@ -220,30 +253,7 @@ public class HomeFragment extends Fragment {
         }
     }
 
-    private void setOnClickBtn (){
-        searchCityBtn.setOnClickListener(clickAlertDialogView);
-    }
 
-    private View.OnClickListener clickAlertDialogView = new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(Objects.requireNonNull(getContext()));
-            final View contentView = getLayoutInflater().inflate(R.layout.alert_dialog, null);
-            builder.setTitle(R.string.enter_name)
-                    .setView(contentView)
-                    .setPositiveButton(R.string.done, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            EditText editText = contentView.findViewById(R.id.search_editor);
-                            cityChoice = editText.getText().toString();
-                            cityName.setText(cityChoice);
-                            createWeatherJsonParam();
-                        }
-                    });
-            androidx.appcompat.app.AlertDialog alert = builder.create();
-            alert.show();
-        }
-    };
 }
 
 
