@@ -25,7 +25,9 @@ public class Request extends Thread {
     private static String temperatureValue, pressureText, humidityStr, windSpeedStr, icoView;
     private static int icoId;
 
-    public static void createWeatherJsonParam() {
+    @Override
+    public void run()	//Этот метод будет выполнен в побочном потоке
+    {
         try {
             final URL uri = new URL(WEATHER_URL + cityChoice + "&units=metric&appid=" + API_KEY);
             // Запоминаем основной поток
