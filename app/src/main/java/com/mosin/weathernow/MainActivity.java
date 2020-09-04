@@ -25,14 +25,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 public class MainActivity extends AppCompatActivity {
-    SharedPreferences sharedPreferences;
     private AppBarConfiguration mAppBarConfiguration;
-    private static String cityNameSearch;
-
+    public static String cityChoice;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        initCity();
+        Request.createWeatherJsonParam();
         initToolBar();
         initDrawerMenu();
     }
@@ -73,6 +73,12 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.fragmentContainer);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
+    }
+
+    private void initCity (){
+        SharedPreferences sharedPreferences;
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        cityChoice = sharedPreferences.getString("cityName", "cityNameSearch");
     }
 }
 
