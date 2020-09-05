@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">WeatherNow</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -23,4 +23,8 @@
     <string name="wind_speed">Wind speed</string>
     <string name="humidity">Humidity</string>
     <string name="pressure">Pressure</string>
+    <string name="setting_parametr">Setting</string>
+    <string name="search">search</string>
+    <string name="Us_me">Mosin Roman</string>
+    <string name="mosin_test_test" tools:ignore="MissingTranslation">mosin@test.test</string>
 </resources>

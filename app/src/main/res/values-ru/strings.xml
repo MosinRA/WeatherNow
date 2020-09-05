@@ -23,4 +23,7 @@
     <string name="wind_speed">Скорость ветра</string>
     <string name="humidity">Влажность</string>
     <string name="pressure">Давление</string>
+    <string name="setting_parametr">Настройка отображения парраметров</string>
+    <string name="search">Поиск</string>
+    <string name="Us_me">Мосин Роман</string>
     </resources>
